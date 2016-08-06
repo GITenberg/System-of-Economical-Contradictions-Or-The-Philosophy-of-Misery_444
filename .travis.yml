@@ -1,0 +1,61 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+before_install:
+- gem install asciidoctor -v 1.5.2
+- gem install tilt
+- sudo pip install git+https://github.com/gitenberg-dev/gitberg
+- sudo pip install pillow
+- sudo pip install cssutils
+- sudo pip install docutils
+- sudo pip install roman
+- sudo pip install git+https://github.com/gitenberg-dev/pg-epubmaker
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+
+- /usr/bin/python -c "from gitenberg import travis; travis.build_epub()"
+- ebook-convert book.epub book.mobi
+- xvfb-run ebook-convert book.epub book.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: mmx53W76Bf8zcnFhnpwuqTVNWk6I7FsDOjbxLW5au3JiIAOKzZ05dVEMo01msrgLukFwEJf1qs8WEqDek03fpWb+qJZURUs2RDvnCN9TXEukOkQAGoPqGMVysZ1YDWqOfdFsJ3eNKDdMp6E6EccTHg3mBBT+PEUc10Vy/40LwUIi3vDp76+76Q8PjZwhLEuj6KCkTwienPLzuidfo8I5NvBoPMBkexjs3RZtSEGgeIEOV/kMFLu3LUTI42fqlL1tPY5dSwQGBFob7YjEmP5OB5sUgv71FY9KxvZZNfaSS43LC7qUQaTs0ktnWulrPb9LILac+xaBi1u/Md84J/Z6Dx0o1xjeMXtIKzpMK1BY+h5lM2XkuFjylM7jFc5oYgp8R/AKBBv/vORJko3JwDIyAwrbmKqSDDuUPu9WeLgg//9sZY/InksUvJ0dKyOyojSQS34ko6XLdsylX717m5IppnfH2FLdaIACCkuz6ZZePVosHhJOu9uCMWNlzbrlm/XaZonE5tYs3QXMv84EJ5iVTjI1Wjp/b2fSoad5Ra2pF4P4EqO6DYRDbkG91iy6ClpDD1osCnxmPCJ5PbU7SAcuoNfMXfua+pUmIYcy2rK/5Aet6bBHmt27apZofVSzuk04tSOeHXijVVXIIDFKxUEgAU+g1UIV7LapLC8LJIXidDM=
+  file:
+    - book.epub
+    - book.mobi
+    - book.pdf
+  "on":
+    repo: GITenberg/System-of-Economical-Contradictions-Or-The-Philosophy-of-Misery_444
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
+    - python-pip
+    - git
+    - python-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - zlib1g-dev
+    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - tidy
