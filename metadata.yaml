@@ -1,5 +1,5 @@
 _repo: System-of-Economical-Contradictions-Or-The-Philosophy-of-Misery_444
-_version: 0.2.0
+_version: 0.2.1
 alternative_title: Système des contradictions économiques. English
 covers:
 - cover_type: generated
@@ -28,5 +28,6 @@ rights_url: http://creativecommons.org/about/pdm
 subjects:
 - !lcsh 'Economics'
 - !lcc 'HB'
+- GITenberg
 title: System of Economical Contradictions; Or, The Philosophy of Misery
 url: http://www.gutenberg.org/ebooks/444
